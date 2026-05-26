@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import numpy as np
 import pandas as pd
 import pytest
 
@@ -10,7 +9,6 @@ from varengine.backtest.christoffersen import ChristoffersenCC, ChristoffersenIn
 from varengine.backtest.kupiec import KupiecPOF
 from varengine.backtest.runner import count_violations, walk_forward
 from varengine.backtest.traffic_light import TrafficLight
-from varengine.protocols import RollingSeries
 from varengine.var.historical import HistoricalVaR
 
 

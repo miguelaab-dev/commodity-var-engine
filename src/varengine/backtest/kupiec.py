@@ -40,10 +40,7 @@ class KupiecPOF:
             lr_stat = -2 * n * np.log(p)
         else:
             p_hat = x / n
-            lr_stat = -2 * (
-                (n - x) * np.log((1 - p) / (1 - p_hat))
-                + x * np.log(p / p_hat)
-            )
+            lr_stat = -2 * ((n - x) * np.log((1 - p) / (1 - p_hat)) + x * np.log(p / p_hat))
 
         p_value = 1 - sp_stats.chi2.cdf(lr_stat, df=1)
 

@@ -34,11 +34,13 @@ def fat_tail_returns(rng: np.random.Generator) -> pd.Series:
 def multi_asset_returns(rng: np.random.Generator) -> pd.DataFrame:
     """1000 days of 3-asset correlated returns."""
     # Target correlation
-    corr = np.array([
-        [1.0, 0.6, 0.2],
-        [0.6, 1.0, 0.3],
-        [0.2, 0.3, 1.0],
-    ])
+    corr = np.array(
+        [
+            [1.0, 0.6, 0.2],
+            [0.6, 1.0, 0.3],
+            [0.2, 0.3, 1.0],
+        ]
+    )
     L = np.linalg.cholesky(corr)
     Z = rng.standard_normal((1000, 3))
     correlated = Z @ L.T * 0.015

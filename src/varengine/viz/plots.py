@@ -61,26 +61,39 @@ def plot_backtest(
     fig = make_subplots(rows=1, cols=1)
 
     # Returns
-    fig.add_trace(go.Scatter(
-        x=series.dates, y=series.realised,
-        mode="lines", name="Return", line=dict(color="#6b7280", width=0.8),
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=series.dates,
+            y=series.realised,
+            mode="lines",
+            name="Return",
+            line=dict(color="#6b7280", width=0.8),
+        )
+    )
 
     # VaR line (inverted to return space)
-    fig.add_trace(go.Scatter(
-        x=series.dates, y=-series.var_series,
-        mode="lines", name=f"VaR ({series.confidence:.0%})",
-        line=dict(color="#2563eb", width=1.5, dash="dash"),
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=series.dates,
+            y=-series.var_series,
+            mode="lines",
+            name=f"VaR ({series.confidence:.0%})",
+            line=dict(color="#2563eb", width=1.5, dash="dash"),
+        )
+    )
 
     # Breach markers
     breach_dates = series.dates[breaches]
     breach_returns = series.realised[breaches]
-    fig.add_trace(go.Scatter(
-        x=breach_dates, y=breach_returns,
-        mode="markers", name="Violation",
-        marker=dict(color="#dc2626", size=6, symbol="x"),
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=breach_dates,
+            y=breach_returns,
+            mode="markers",
+            name="Violation",
+            marker=dict(color="#dc2626", size=6, symbol="x"),
+        )
+    )
 
     fig.update_layout(
         title=title or f"Backtest: {series.method}",
@@ -101,15 +114,18 @@ def plot_correlation_heatmap(
     """Correlation matrix heatmap for portfolio constituents."""
     corr = returns.corr()
 
-    fig = go.Figure(data=go.Heatmap(
-        z=corr.values,
-        x=corr.columns.tolist(),
-        y=corr.index.tolist(),
-        colorscale="RdBu_r",
-        zmin=-1, zmax=1,
-        text=corr.round(2).values,
-        texttemplate="%{text}",
-    ))
+    fig = go.Figure(
+        data=go.Heatmap(
+            z=corr.values,
+            x=corr.columns.tolist(),
+            y=corr.index.tolist(),
+            colorscale="RdBu_r",
+            zmin=-1,
+            zmax=1,
+            text=corr.round(2).values,
+            texttemplate="%{text}",
+        )
+    )
     fig.update_layout(
         title="Commodity Return Correlations",
         template="plotly_white",

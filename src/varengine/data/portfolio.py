@@ -101,6 +101,7 @@ class Portfolio:
         if abs(total - 1.0) > 0.01:
             # warn but don't crash — weights are normalised at runtime
             import warnings
+
             warnings.warn(
                 f"Portfolio weights sum to {total:.4f}, not 1.0. "
                 "They will be normalised automatically.",

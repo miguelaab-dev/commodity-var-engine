@@ -15,7 +15,6 @@ validate the output and raise a clear error rather than returning garbage.
 
 from __future__ import annotations
 
-import numpy as np
 import pandas as pd
 from scipy import stats as sp_stats
 
@@ -42,16 +41,12 @@ class CornishFisherVaR:
 
     def _cf_quantile(self, confidence: float) -> float:
         """Compute the Cornish-Fisher adjusted quantile."""
-        z = sp_stats.norm.ppf(confidence)
         S = self._skew
         K = self._excess_kurt
 
-        z_cf = (
-            z
-            + (z**2 - 1) * S / 6
-            + (z**3 - 3 * z) * K / 24
-            - (2 * z**3 - 5 * z) * S**2 / 36
-        )
+        z = sp_stats.norm.ppf(confidence)
+
+        z_cf = z + (z**2 - 1) * S / 6 + (z**3 - 3 * z) * K / 24 - (2 * z**3 - 5 * z) * S**2 / 36
         return z_cf
 
     def estimate(self, confidence: float = 0.99) -> RiskEstimate:
@@ -63,7 +58,6 @@ class CornishFisherVaR:
 
         # ES approximation: use the normal ES formula but with CF-adjusted σ
         # This is a pragmatic approximation; exact CF-ES requires integration.
-        z = sp_stats.norm.ppf(confidence)
         phi_z_cf = sp_stats.norm.pdf(z_cf)
         es = -self._mu + self._sigma * phi_z_cf / (1 - confidence)
 

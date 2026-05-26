@@ -22,7 +22,6 @@ from typing import Literal
 
 import numpy as np
 import pandas as pd
-from scipy import stats as sp_stats
 from scipy.linalg import cholesky
 
 from varengine.models.volatility.constant import ConstantVolatility
@@ -106,9 +105,7 @@ class MonteCarloVaR:
         correlated = Z @ L.T
 
         # Scale by per-asset volatility
-        sigmas = np.array([
-            returns.iloc[:, i].std(ddof=1) for i in range(n_assets)
-        ])
+        sigmas = np.array([returns.iloc[:, i].std(ddof=1) for i in range(n_assets)])
         mus = returns.mean().values
 
         self._simulated_returns = mus + sigmas * correlated

@@ -8,10 +8,7 @@ Usage:
 
 from __future__ import annotations
 
-from pathlib import Path
-
 import click
-import pandas as pd
 
 
 @click.group()
@@ -37,7 +34,10 @@ def run(config: str, confidence: float, start: str) -> None:
     returns = clean_returns(compute_returns(prices, method="arithmetic"))
     port_returns = portfolio.portfolio_returns(returns)
 
-    click.echo(f"Data: {len(port_returns)} observations ({port_returns.index[0].date()} → {port_returns.index[-1].date()})")
+    click.echo(
+        f"Data: {len(port_returns)} obs "
+        f"({port_returns.index[0].date()} → {port_returns.index[-1].date()})"
+    )
     click.echo(f"Confidence: {confidence:.1%}\n")
 
     models = [
@@ -84,7 +84,9 @@ def backtest(config: str, confidence: float, window: int, start: str) -> None:
     series = walk_forward(model, port_returns, window=window, confidence=confidence)
 
     n_violations = count_violations(series)
-    click.echo(f"Violations: {n_violations} / {len(series.dates)} ({n_violations/len(series.dates):.2%})")
+    click.echo(
+        f"Violations: {n_violations} / {len(series.dates)} ({n_violations / len(series.dates):.2%})"
+    )
     click.echo(f"Expected:   {1 - confidence:.2%}\n")
 
     tests = [KupiecPOF(), ChristoffersenIndependence(), ChristoffersenCC(), TrafficLight()]
@@ -98,7 +100,9 @@ def backtest(config: str, confidence: float, window: int, start: str) -> None:
         p_str = f"{result.p_value:.4f}" if result.p_value > 0 else "N/A"
         zone = result.details.get("zone", "")
         extra = f" [{zone}]" if zone else ""
-        click.echo(f"{result.test_name:<30} {result.statistic:>10.4f} {p_str:>10} {status:>10}{extra}")
+        click.echo(
+            f"{result.test_name:<30} {result.statistic:>10.4f} {p_str:>10} {status:>10}{extra}"
+        )
 
 
 if __name__ == "__main__":

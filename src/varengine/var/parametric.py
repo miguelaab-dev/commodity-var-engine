@@ -14,11 +14,9 @@ commodities (fat tails, skewness).
 
 from __future__ import annotations
 
-import numpy as np
 import pandas as pd
 from scipy import stats as sp_stats
 
-from varengine.models.volatility.ewma import EWMAVolatility
 from varengine.protocols import RiskEstimate, VolatilityModel
 
 

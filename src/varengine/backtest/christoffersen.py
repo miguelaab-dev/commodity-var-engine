@@ -20,7 +20,6 @@ from __future__ import annotations
 import numpy as np
 from scipy import stats as sp_stats
 
-from varengine.backtest.runner import count_violations
 from varengine.protocols import BacktestResult, RollingSeries
 
 
@@ -109,8 +108,12 @@ class ChristoffersenIndependence:
             reject_null=p_value < alpha,
             alpha=alpha,
             details={
-                "n00": n00, "n01": n01, "n10": n10, "n11": n11,
-                "p01": p01, "p11": p11,
+                "n00": n00,
+                "n01": n01,
+                "n10": n10,
+                "n11": n11,
+                "p01": p01,
+                "p11": p11,
             },
         )
 

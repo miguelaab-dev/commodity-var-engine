@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -16,7 +18,9 @@ class TestComputeReturns:
         r = compute_returns(prices, method="arithmetic")
 
         expected = pd.DataFrame({"A": [0.05, 110 / 105 - 1]}, index=[1, 2])
-        pd.testing.assert_frame_equal(r.reset_index(drop=True), expected.reset_index(drop=True), atol=1e-10)
+        pd.testing.assert_frame_equal(
+            r.reset_index(drop=True), expected.reset_index(drop=True), atol=1e-10
+        )
 
     def test_log_returns_reject_negative_prices(self) -> None:
         prices = pd.DataFrame({"A": [100.0, -37.63, 20.0]})
@@ -41,7 +45,7 @@ class TestFlagRollDates:
 
 
 class TestPortfolio:
-    def test_from_yaml(self, tmp_path) -> None:
+    def test_from_yaml(self, tmp_path: Path) -> None:
         config = tmp_path / "test.yaml"
         config.write_text("""
 portfolio:
@@ -57,7 +61,7 @@ portfolio:
         assert p.tickers == ["A", "B"]
         np.testing.assert_allclose(p.weights.values, [0.6, 0.4])
 
-    def test_weights_normalise(self, tmp_path) -> None:
+    def test_weights_normalise(self, tmp_path: Path) -> None:
         config = tmp_path / "test.yaml"
         config.write_text("""
 portfolio:
@@ -69,11 +73,13 @@ portfolio:
         np.testing.assert_allclose(p.weights.sum(), 1.0)
 
     def test_portfolio_returns(self, multi_asset_returns: pd.DataFrame) -> None:
-        p = Portfolio(assets={
-            "ASSET_A": {"name": "A", "weight": 0.5},
-            "ASSET_B": {"name": "B", "weight": 0.3},
-            "ASSET_C": {"name": "C", "weight": 0.2},
-        })
+        p = Portfolio(
+            assets={
+                "ASSET_A": {"name": "A", "weight": 0.5},
+                "ASSET_B": {"name": "B", "weight": 0.3},
+                "ASSET_C": {"name": "C", "weight": 0.2},
+            }
+        )
         port_ret = p.portfolio_returns(multi_asset_returns)
         assert len(port_ret) == len(multi_asset_returns)
         assert isinstance(port_ret, pd.Series)

@@ -13,10 +13,10 @@ from typing import Protocol, runtime_checkable
 import numpy as np
 import pandas as pd
 
-
 # ---------------------------------------------------------------------------
 # Result containers
 # ---------------------------------------------------------------------------
+
 
 @dataclass(frozen=True)
 class RiskEstimate:
@@ -33,8 +33,7 @@ class RiskEstimate:
             raise ValueError(f"confidence must be in (0, 1), got {self.confidence}")
         if self.es < self.var:
             raise ValueError(
-                f"ES ({self.es:.6f}) must be >= VaR ({self.var:.6f}). "
-                "Check model implementation."
+                f"ES ({self.es:.6f}) must be >= VaR ({self.var:.6f}). Check model implementation."
             )
 
 
@@ -43,9 +42,9 @@ class RollingSeries:
     """Time series of VaR/ES forecasts aligned with realised returns."""
 
     dates: pd.DatetimeIndex
-    var_series: pd.Series       # ex-ante VaR forecasts  (positive = loss)
-    es_series: pd.Series        # ex-ante ES forecasts   (positive = loss)
-    realised: pd.Series         # ex-post realised returns (negative = loss)
+    var_series: pd.Series  # ex-ante VaR forecasts  (positive = loss)
+    es_series: pd.Series  # ex-ante ES forecasts   (positive = loss)
+    realised: pd.Series  # ex-post realised returns (negative = loss)
     confidence: float
     method: str
 
@@ -57,14 +56,15 @@ class BacktestResult:
     test_name: str
     statistic: float
     p_value: float
-    reject_null: bool           # True → model is rejected at the given alpha
-    alpha: float                # significance level of the test (e.g. 0.05)
+    reject_null: bool  # True → model is rejected at the given alpha
+    alpha: float  # significance level of the test (e.g. 0.05)
     details: dict[str, object] = field(default_factory=dict)
 
 
 # ---------------------------------------------------------------------------
 # Volatility model protocol
 # ---------------------------------------------------------------------------
+
 
 @runtime_checkable
 class VolatilityModel(Protocol):
@@ -87,6 +87,7 @@ class VolatilityModel(Protocol):
 # ---------------------------------------------------------------------------
 # VaR / ES model protocol
 # ---------------------------------------------------------------------------
+
 
 @runtime_checkable
 class VaRModel(Protocol):
@@ -121,6 +122,7 @@ class VaRModel(Protocol):
 # Backtest method protocol
 # ---------------------------------------------------------------------------
 
+
 @runtime_checkable
 class BacktestMethod(Protocol):
     """Statistical test applied to a RollingSeries."""
@@ -130,5 +132,4 @@ class BacktestMethod(Protocol):
         ...
 
     @property
-    def name(self) -> str:
-        ...
+    def name(self) -> str: ...

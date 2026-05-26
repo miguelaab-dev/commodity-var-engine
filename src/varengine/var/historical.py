@@ -36,7 +36,7 @@ class HistoricalVaR:
                 "HistoricalVaR expects a single portfolio return Series. "
                 "Compute portfolio returns first via Portfolio.portfolio_returns()."
             )
-        self._returns = returns.iloc[-self.window:]
+        self._returns = returns.iloc[-self.window :]
 
     def estimate(self, confidence: float = 0.99) -> RiskEstimate:
         if self._returns is None:
