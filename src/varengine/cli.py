@@ -25,7 +25,7 @@ def main() -> None:
 @click.option("--start", default="2010-01-01", help="Data start date.")
 def run(config: str, confidence: float, start: str) -> None:
     """Compute VaR and ES for all methods."""
-    from varengine.data.loader import compute_returns, download_prices
+    from varengine.data.loader import clean_returns, compute_returns, download_prices
     from varengine.data.portfolio import Portfolio
     from varengine.models.volatility.ewma import EWMAVolatility
     from varengine.var import CornishFisherVaR, HistoricalVaR, MonteCarloVaR, ParametricVaR
@@ -34,7 +34,7 @@ def run(config: str, confidence: float, start: str) -> None:
     click.echo(f"Portfolio: {len(portfolio.tickers)} assets")
 
     prices = download_prices(portfolio.tickers, start=start)
-    returns = compute_returns(prices, method="arithmetic")
+    returns = clean_returns(compute_returns(prices, method="arithmetic"))
     port_returns = portfolio.portfolio_returns(returns)
 
     click.echo(f"Data: {len(port_returns)} observations ({port_returns.index[0].date()} → {port_returns.index[-1].date()})")
@@ -69,13 +69,13 @@ def backtest(config: str, confidence: float, window: int, start: str) -> None:
     from varengine.backtest.kupiec import KupiecPOF
     from varengine.backtest.runner import count_violations, walk_forward
     from varengine.backtest.traffic_light import TrafficLight
-    from varengine.data.loader import compute_returns, download_prices
+    from varengine.data.loader import clean_returns, compute_returns, download_prices
     from varengine.data.portfolio import Portfolio
     from varengine.var import HistoricalVaR
 
     portfolio = Portfolio.from_yaml(config)
     prices = download_prices(portfolio.tickers, start=start)
-    returns = compute_returns(prices, method="arithmetic")
+    returns = clean_returns(compute_returns(prices, method="arithmetic"))
     port_returns = portfolio.portfolio_returns(returns)
 
     model = HistoricalVaR(window=window)

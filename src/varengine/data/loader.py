@@ -96,3 +96,14 @@ def flag_roll_dates(
     """
     z_scores = (returns - returns.mean()) / returns.std()
     return z_scores.abs() > z_threshold
+
+
+def clean_returns(
+    returns: pd.DataFrame,
+    z_threshold: float = 6.0,
+) -> pd.DataFrame:
+    """Remove probable roll-date spikes from the return series."""
+    flags = flag_roll_dates(returns, z_threshold=z_threshold)
+    cleaned = returns.copy()
+    cleaned[flags] = np.nan
+    return cleaned.dropna()
