@@ -1,0 +1,54 @@
+# commodity-var-engine portfolio configuration
+# All parameters configurable — no hardcoded values in the codebase.
+
+portfolio:
+  assets:
+    CL=F:
+      name: "WTI Crude Oil"
+      weight: 0.20
+    NG=F:
+      name: "Natural Gas"
+      weight: 0.10
+    GC=F:
+      name: "Gold"
+      weight: 0.20
+    HG=F:
+      name: "Copper"
+      weight: 0.15
+    ZS=F:
+      name: "Soybeans"
+      weight: 0.15
+    ZC=F:
+      name: "Corn"
+      weight: 0.10
+    KC=F:
+      name: "Coffee"
+      weight: 0.10
+
+models:
+  confidence_levels: [0.95, 0.99]
+  rolling_window: 500
+  return_type: "arithmetic"  # "arithmetic" (recommended) or "log"
+
+  monte_carlo:
+    n_simulations: 10000
+    seed: 42
+
+  ewma:
+    lambda: 0.94
+
+  garch:
+    p: 1
+    q: 1
+    dist: "t"  # "normal" or "t"
+
+backtest:
+  window: 500
+  min_observations_warning: 500
+  traffic_light:
+    green_max: 4
+    yellow_max: 9
+
+data:
+  start_date: "2010-01-01"
+  cache_dir: "data"

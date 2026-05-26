@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# Environment
+.env
+
+# Data (keep structure, ignore downloaded files)
+data/*
+!data/.gitkeep
+
+# Reports (generated outputs)
+reports/*.png
+reports/*.pdf
+reports/*.xlsx
+
+# Jupyter
+.ipynb_checkpoints/
+
+# mypy / ruff
+.mypy_cache/
+.ruff_cache/
+
+# pytest
+.pytest_cache/
+htmlcov/
+.coverage
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
